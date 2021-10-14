@@ -171,15 +171,48 @@
   }
 
   .hand {
-    width: 50%;
-    height: 6px;
-    background: black;
+    --rotation: 0;
+
     position: absolute;
     top: 50%;
     transform-origin: 100%;
-    /* transform: rotate(90deg);*/
+    transform: rotate(var(--rotation) * 1deg);
     transition: all 0.05s;
     transition-timing-function: cubic-bezier(0.1, 2.7, 0.58, 1);
+    /*border: 1px solid white;*/
+  }
+
+  .second-hand {
+    width: 50%;
+    height: 3px;
+    background: red;
+  }
+
+  .min-hand {
+    width: 50%;
+    height: 6px;
+    background: black;
+  }
+
+  .hour-hand {
+    width: 50%;
+    height: 10px;
+    background: black;
+
+  }
+
+  .clock-face::after {
+    content:  '';
+    position: absolute;
+    top: 51%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: black;
+    border-radius: 50%;
+    z-index: 120;
+    width: 15px;
+    height: 15px;
+
   }
 
   .remove-transition {
