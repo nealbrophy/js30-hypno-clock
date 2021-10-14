@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <title>JS + CSS Clock</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans&family=Rampart+One&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -102,7 +105,10 @@
     </div>
   </div>
 
-  <div id="hypno-message"></div>
+  <div id="hypno-message"></div>  
+
+
+  
 
   <style>
   *, *::after, *::before {
@@ -148,6 +154,8 @@
     height: 100%;
     text-align: center;
     transform: rotate(var(--rotation));
+    font-family: 'Balsamiq Sans', sans-serif;
+    font-size: 1.2rem;
   }
 
   .clock .number1 {--rotation:  30deg;}
@@ -283,10 +291,48 @@
 
   .message-visible {
     position: absolute;
-    color:  white;
-    font-size: 50px;
+    color:  black;
+    font-size: 8rem;
+    font-family: 'Rampart One';
     z-index: 1000;
+    animation: fadeIn 6s;
+    -webkit-animation: fadeIn 6s;
+    -moz-animation: fadeIn 6s;
+    -o-animation: fadeIn 6s;
+    -ms-animation: fadeIn 6s;
   }
+
+  @keyframes fadeIn {
+    0% {opacity: 0;}
+    50% {opacity:  .6;}
+    100% {opacity: 0;}
+  }
+
+  @-moz-keyframes fadeIn {
+    0% {opacity: 0;}
+    50% {opacity:  .6;}
+    100% {opacity: 0;}
+  }
+
+  @-webkit-keyframes fadeIn {
+    0% {opacity:0;}
+    50% {opacity: .6;}
+    100% {opacity: 0;}
+  }
+
+  @-o-keyframes fadeIn {
+    0% {opacity:0;}
+    50% {opacity: .6;}
+    100% {opacity: 0;}
+  }
+
+  @-ms-keyframes fadeIn {
+    0% {opacity:0;}
+    50% {opacity: .6;}
+    100% {opacity: 0;}
+  }
+
+
 
 </style>
 
@@ -319,26 +365,52 @@
   setInterval(setDate, 1000);
 
   const messageList = [
-    'obey',
-    'sleep',
-    'buy',
-    'consume',
-    'submit',
-    'no thought',
-    'watch tv'
+  'obey',
+  'sleep',
+  'buy',
+  'consume',
+  'submit',
+  'no thought',
+  'watch tv',
+  'reproduce'
   ]
   
+  const positions = [
+  [18,3],
+  [74,58],
+  [63,54],
+  [0,12],
+  [2,53],
+  [26,10],
+  [66,37],
+  [13,34],
+  [76,13],
+  [54,65],
+  ]
+
+
   const messageTarget = document.getElementById('hypno-message');
 
-  function populateMessage() {
-    let rand = Math.round(Math.random() * (messageList.length-1));
-    messageTarget.classList.add('message-visible')
-    messageTarget.style.top = `${Math.round(Math.random()*100)}%`;
-    messageTarget.style.left = `${Math.round(Math.random()*100)}%`;
-    messageTarget.innerText = messageList[rand];
+  function sleep(time) {
+    return new Promise((resolve) => setTimeout(resolve, time));
   }
 
-  setInterval(populateMessage, 5000)
+  function populateMessage() {
+    let randMessage = Math.round(Math.random() * (messageList.length-1));
+    let randPosition = Math.round(Math.random() * (positions.length-1))
+    messageTarget.classList.add('message-visible')
+    messageTarget.style.top = `${positions[randPosition][0]}%`;
+    messageTarget.style.left = `${positions[randPosition][1]}%`;
+    messageTarget.innerText = messageList[randMessage];
+    sleep(6000).then(() => {
+      messageTarget.classList.remove('message-visible');
+      messageTarget.style.top = '';
+      messageTarget.style.left = '';
+      messageTarget.innerText = '';
+    });
+  }
+
+  setInterval(populateMessage, 10000)
 
   
 
