@@ -27,7 +27,82 @@
     </div>
   </div>
 
+  <div class="hypno-container">
+    <div class="spiral1">
+      <div class="spiral2">
+        <div class="spiral3">
+          <div class="spiral4">
+            <div class="spiral1">
+              <div class="spiral2">
+                <div class="spiral3">
+                  <div class="spiral4">
+                    <div class="spiral1">
+                      <div class="spiral2">
+                        <div class="spiral3">
+                          <div class="spiral4">
+                            <div class="spiral1">
+                              <div class="spiral2">
+                                <div class="spiral3">
+                                  <div class="spiral4">
+                                    <div class="spiral1">
+                                      <div class="spiral2">
+                                        <div class="spiral3">
+                                          <div class="spiral4">
+                                            <div class="spiral1">
+                                              <div class="spiral2">
+                                                <div class="spiral3">
+                                                  <div class="spiral4">
+                                                    <div class="spiral1">
+                                                      <div class="spiral2">
+                                                        <div class="spiral3">
+                                                          <div class="spiral4">
+                                                            <div class="spiral1">
+                                                              <div class="spiral2">
+                                                                <div class="spiral3">
+                                                                  <div class="spiral4">
+                                                                    <div class="spiral1">
+                                                                      <div class="spiral2">
+                                                                        <div class="spiral3">
+                                                                          <div class="spiral4">
+                                                                          </div>
+                                                                        </div>
+                                                                      </div>
+                                                                    </div>
+                                                                  </div>
+                                                                </div>
+                                                              </div>
+                                                            </div>
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
+  <div id="hypno-message"></div>
 
   <style>
   *, *::after, *::before {
@@ -35,14 +110,11 @@
     padding: 0;
     box-sizing: border-box;
   }
-/*
+
   html {
-    background: #018DED url(https://unsplash.it/1500/1000?image=881&blur=5);
-    background-size: cover;
-    font-family: 'helvetica neue';
-    text-align: center;
-    font-size: 10px;
-  }*/
+    height: 100%;
+    overflow: hidden;
+  }
 
   body {
     display: flex;
@@ -56,16 +128,17 @@
   .clock {
     width: 30rem;
     height: 30rem;
-    border: 20px solid white;
+    border: 20px solid black;
     border-radius: 50%;
     margin: 50px auto;
     position: relative;
     padding: 2rem;
     box-shadow:
     0 0 0 4px rgba(0,0,0,0.1),
-    inset 0 0 0 3px #EFEFEF,
+    inset 0 0 0 3px #6b6a6a,
     inset 0 0 10px black,
     0 0 10px rgba(0,0,0,0.2);
+    z-index: 100;
   }
 
   .clock .number {
@@ -113,6 +186,75 @@
     transition: none !important;
   }
 
+  .hypno-container {
+    position: absolute;
+    background-color: #eee;
+    width:435px;
+    height:435px;
+    -webkit-animation-name: spin; 
+    -webkit-animation-iteration-count: infinite; 
+    -webkit-animation-timing-function: linear;
+    -webkit-animation-duration: 3s; 
+    z-index: 1;
+  }
+
+  .spiral1,.spiral2,.spiral3,.spiral4 {
+    position: absolute;
+    width: 85%;
+    height: 85%;
+    margin: 0;
+    padding: 0;
+    background-color: #eee;
+  }
+  .spiral1 {
+    left: 0;
+    top: 0;
+    border-left: none;
+    border-top: none;
+    background-color: #fff;
+  }
+
+  .spiral2 {
+    left: 0;
+    bottom: 0;
+    border-left: none;
+    border-bottom: none;
+  }
+
+  .spiral3 {
+    right: 0;
+    bottom: 0;
+    border-right: none;
+    border-bottom: none;
+    background-color: #fff;
+  }
+
+  .spiral4 {
+    right: 0;
+    top: 0;
+    border-right: none;
+    border-top: none;
+  }
+
+  div {
+    border-radius: 100%;
+  }
+  @-webkit-keyframes spin {  
+    from {  
+      -webkit-transform: rotate(0deg);  
+    }  
+    to {  
+      -webkit-transform: rotate(360deg);  
+    } 
+  }
+
+  .message-visible {
+    position: absolute;
+    color:  white;
+    font-size: 50px;
+    z-index: 1000;
+  }
+
 </style>
 
 <script>
@@ -142,6 +284,31 @@
   }
 
   setInterval(setDate, 1000);
+
+  const messageList = [
+    'obey',
+    'sleep',
+    'buy',
+    'consume',
+    'submit',
+    'no thought',
+    'watch tv'
+  ]
+  
+  const messageTarget = document.getElementById('hypno-message');
+
+  function populateMessage() {
+    let rand = Math.round(Math.random() * (messageList.length-1));
+    messageTarget.classList.add('message-visible')
+    messageTarget.style.top = `${Math.round(Math.random()*100)}%`;
+    messageTarget.style.left = `${Math.round(Math.random()*100)}%`;
+    messageTarget.innerText = messageList[rand];
+  }
+
+  setInterval(populateMessage, 5000)
+
+  
+
 
 </script>
 </body>
