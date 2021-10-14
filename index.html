@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JS + CSS Clock</title>
+</head>
+<body>
+
+
+  <div class="clock">
+    <div class="clock-face">
+      <div class="hand hour-hand"></div>
+      <div class="hand min-hand"></div>
+      <div class="hand second-hand"></div>
+      <div class="number number1">1</div>
+      <div class="number number2">2</div>
+      <div class="number number3">3</div>
+      <div class="number number4">4</div>
+      <div class="number number5">5</div>
+      <div class="number number6">6</div>
+      <div class="number number7">7</div>
+      <div class="number number8">8</div>
+      <div class="number number9">9</div>
+      <div class="number number10">10</div>
+      <div class="number number11">11</div>
+      <div class="number number12">12</div>
+    </div>
+  </div>
+
+
+
+  <style>
+  *, *::after, *::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+/*
+  html {
+    background: #018DED url(https://unsplash.it/1500/1000?image=881&blur=5);
+    background-size: cover;
+    font-family: 'helvetica neue';
+    text-align: center;
+    font-size: 10px;
+  }*/
+
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #018DED url(https://unsplash.it/1500/1000?image=881&blur=5);
+    background-size: cover;
+  }
+
+  .clock {
+    width: 30rem;
+    height: 30rem;
+    border: 20px solid white;
+    border-radius: 50%;
+    margin: 50px auto;
+    position: relative;
+    padding: 2rem;
+    box-shadow:
+    0 0 0 4px rgba(0,0,0,0.1),
+    inset 0 0 0 3px #EFEFEF,
+    inset 0 0 10px black,
+    0 0 10px rgba(0,0,0,0.2);
+  }
+
+  .clock .number {
+    --rotation: 0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transform: rotate(var(--rotation));
+  }
+
+  .clock .number1 {--rotation:  30deg;}
+  .clock .number2 {--rotation:  60deg;}
+  .clock .number3 {--rotation:  90deg;}
+  .clock .number4 {--rotation:  120deg;}
+  .clock .number5 {--rotation:  150deg;}
+  .clock .number6 {--rotation:  180deg;}
+  .clock .number7 {--rotation:  210deg;}
+  .clock .number8 {--rotation:  240deg;}
+  .clock .number9 {--rotation:  270deg;}
+  .clock .number10 {--rotation: 300deg;}
+  .clock .number11 {--rotation: 330deg;}
+
+
+  .clock-face {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform: translateY(-3px); /* account for the height of the clock hands */
+  }
+
+  .hand {
+    width: 50%;
+    height: 6px;
+    background: black;
+    position: absolute;
+    top: 50%;
+    transform-origin: 100%;
+    /* transform: rotate(90deg);*/
+    transition: all 0.05s;
+    transition-timing-function: cubic-bezier(0.1, 2.7, 0.58, 1);
+  }
+
+  .remove-transition {
+    transition: none !important;
+  }
+
+</style>
+
+<script>
+  const secondHand = document.querySelector('.second-hand');
+  const minuteHand = document.querySelector('.min-hand');
+  const hourHand = document.querySelector('.hour-hand');
+  function setDate() {
+    // time vars
+    const now = new Date();
+    const seconds = now.getSeconds();
+    const minutes = now.getMinutes();
+    const hours = now.getHours();
+    
+    // degree vars
+    const secondsDegrees = (seconds*Math.PI/30);
+    //console.log("Seconds: " + seconds + " Degrees: " + secondsDegrees);
+    const minutesDegrees = (minutes*Math.PI/30);
+    //console.log("Minutes: " + minutes+ " Degrees: " + minutesDegrees);
+    const hoursDegrees = (hours*Math.PI/6) + (minutes*Math.PI/(6*60)) + (seconds*Math.PI/(360*60));
+    //console.log("Hours: " + hours + " Degrees: " + hoursDegrees);
+
+    // remove transition
+    secondHand.style.transform = `rotate(${secondsDegrees}deg)`;
+    minuteHand.style.transform = `rotate(${minutesDegrees}deg)`;
+    hourHand.style.transform = `rotate(${hoursDegrees}deg)`;
+
+  }
+
+  setInterval(setDate, 1000);
+
+</script>
+</body>
+</html>
