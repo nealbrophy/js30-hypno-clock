@@ -12,9 +12,9 @@
 
   <div class="clock">
     <div class="clock-face">
-      <div class="hand hour-hand"></div>
-      <div class="hand min-hand"></div>
-      <div class="hand second-hand"></div>
+      <div class="hand hour" data-hour-hand></div>
+      <div class="hand minute" data-minute-hand></div>
+      <div class="hand second" data-second-hand></div>
       <div class="number number1">1</div>
       <div class="number number2">2</div>
       <div class="number number3">3</div>
@@ -123,13 +123,16 @@
   }
 
   body {
+    background: #018DED url(https://picsum.photos/id/238/2560/1440?blur=8);
+    background-size: cover;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: #018DED url(https://picsum.photos/id/238/2560/1440?blur=8);
-    background-size: cover;
+    overflow: hidden;
   }
+
+  /* CLOCK FACE NUMS & HANDS */
 
   .clock {
     width: 30rem;
@@ -147,6 +150,13 @@
     z-index: 100;
   }
 
+  .clock-face {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform: translateY(-3px); /* account for the height of the clock hands */
+  }
+
   .clock .number {
     --rotation: 0;
     position: absolute;
@@ -158,74 +168,63 @@
     font-size: 1.2rem;
   }
 
-  .clock .number1 {--rotation:  30deg;}
-  .clock .number2 {--rotation:  60deg;}
-  .clock .number3 {--rotation:  90deg;}
-  .clock .number4 {--rotation:  120deg;}
-  .clock .number5 {--rotation:  150deg;}
-  .clock .number6 {--rotation:  180deg;}
-  .clock .number7 {--rotation:  210deg;}
-  .clock .number8 {--rotation:  240deg;}
-  .clock .number9 {--rotation:  270deg;}
-  .clock .number10 {--rotation: 300deg;}
-  .clock .number11 {--rotation: 330deg;}
+  .clock .number1 { --rotation: 30deg; }
+  .clock .number2 { --rotation: 60deg; }
+  .clock .number3 { --rotation: 90deg; }
+  .clock .number4 { --rotation: 120deg; }
+  .clock .number5 { --rotation: 150deg; }
+  .clock .number6 { --rotation: 180deg; }
+  .clock .number7 { --rotation: 210deg; }
+  .clock .number8 { --rotation: 240deg; }
+  .clock .number9 { --rotation: 270deg; }
+  .clock .number10 { --rotation: 300deg; }
+  .clock .number11 { --rotation: 330deg; }
 
-
-  .clock-face {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    transform: translateY(-3px); /* account for the height of the clock hands */
-  }
-
-  .hand {
+  .clock .hand {
     --rotation: 0;
-
     position: absolute;
-    top: 50%;
-    transform-origin: 100%;
-    transform: rotate(var(--rotation) * 1deg);
-    transition: all 0.05s;
-    transition-timing-function: cubic-bezier(0.1, 2.7, 0.58, 1);
-    /*border: 1px solid white;*/
-  }
-
-  .second-hand {
-    width: 50%;
-    height: 3px;
-    background: red;
-  }
-
-  .min-hand {
-    width: 50%;
-    height: 6px;
-    background: black;
-  }
-
-  .hour-hand {
-    width: 50%;
-    height: 10px;
-    background: black;
-
-  }
-
-  .clock-face::after {
-    content:  '';
-    position: absolute;
-    top: 51%;
+    bottom: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    border: 1px solid white;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    transform-origin: bottom;
+    z-index: 10;
+    transform: translateX(-50%) rotate(calc(var(--rotation) * 1deg));
+  }
+
+  .clock::after {
+    content: '';
+    position: absolute;
     background-color: black;
-    border-radius: 50%;
-    z-index: 120;
+    z-index: 11;
     width: 15px;
     height: 15px;
-
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
   }
 
-  .remove-transition {
-    transition: none !important;
+  .clock .hand.second {
+    width: 3px;
+    height: 45%;
+    background-color: red;
   }
+
+  .clock .hand.minute {
+    width: 7px;
+    height: 40%;
+    background-color: black;
+  }
+
+  .clock .hand.hour {
+    width: 10px;
+    height: 35%;
+    background-color: black;
+  }
+
+  /* CLOCK FACE HYPNO ANIMATION */
 
   .hypno-container {
     position: absolute;
@@ -289,6 +288,8 @@
     } 
   }
 
+  /*SUBLIMINAL MESSAGES ANIMATION*/
+
   .message-visible {
     position: absolute;
     color:  black;
@@ -337,33 +338,37 @@
 </style>
 
 <script>
-  const secondHand = document.querySelector('.second-hand');
-  const minuteHand = document.querySelector('.min-hand');
-  const hourHand = document.querySelector('.hour-hand');
-  function setDate() {
-    // time vars
-    const now = new Date();
-    const seconds = now.getSeconds();
-    const minutes = now.getMinutes();
-    const hours = now.getHours();
-    
-    // degree vars
-    const secondsDegrees = (seconds*Math.PI/30);
-    //console.log("Seconds: " + seconds + " Degrees: " + secondsDegrees);
-    const minutesDegrees = (minutes*Math.PI/30);
-    //console.log("Minutes: " + minutes+ " Degrees: " + minutesDegrees);
-    const hoursDegrees = (hours*Math.PI/6) + (minutes*Math.PI/(6*60)) + (seconds*Math.PI/(360*60));
-    //console.log("Hours: " + hours + " Degrees: " + hoursDegrees);
+  // #######
+  // CLOCK
+  // #######
 
-    // remove transition
-    secondHand.style.transform = `rotate(${secondsDegrees}deg)`;
-    minuteHand.style.transform = `rotate(${minutesDegrees}deg)`;
-    hourHand.style.transform = `rotate(${hoursDegrees}deg)`;
+  setInterval(setClock, 1000)
 
+  const hourHand = document.querySelector('[data-hour-hand]')
+  const minuteHand = document.querySelector('[data-minute-hand]')
+  const secondHand = document.querySelector('[data-second-hand]')
+
+  function setClock() {
+    const currentDate = new Date()
+    const secondsRatio = currentDate.getSeconds() / 60
+    const minutesRatio = (secondsRatio + currentDate.getMinutes()) / 60
+    const hoursRatio = (minutesRatio + currentDate.getHours()) / 12
+    setRotation(secondHand, secondsRatio)
+    setRotation(minuteHand, minutesRatio)
+    setRotation(hourHand, hoursRatio)
   }
 
-  setInterval(setDate, 1000);
+  function setRotation(element, rotationRatio) {
+    element.style.setProperty('--rotation', rotationRatio * 360)
+  }
 
+  setClock()
+
+  
+
+  // ####################
+  // SUBLIMINAL MESSAGES
+  // ####################
   const messageList = [
   'obey',
   'sleep',
@@ -373,8 +378,8 @@
   'no thought',
   'watch tv',
   'reproduce'
-  ]
-  
+  ];
+
   const positions = [
   [18,3],
   [74,58],
@@ -386,7 +391,7 @@
   [13,34],
   [76,13],
   [54,65],
-  ]
+  ];
 
 
   const messageTarget = document.getElementById('hypno-message');
@@ -412,7 +417,7 @@
 
   setInterval(populateMessage, 10000)
 
-  
+
 
 
 </script>
